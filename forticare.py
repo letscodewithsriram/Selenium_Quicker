@@ -5,6 +5,10 @@ from selenium.webdriver.support.ui import Select
 import crypto
 import time
 import cmaths
+import json
+
+with open("creds.json","r") as credshr:
+    creds = json.load(credshr)
 
 def get_tkt_timer_info(url):
     print(url)
@@ -19,8 +23,8 @@ def get_tkt_timer_info(url):
     return None
 
 ## FSR Credentials
-username = ''
-password = ''
+username = creds["username"]
+password = creds["password"]
 
 ### Setup Chrome Options
 chrome_options = Options()
