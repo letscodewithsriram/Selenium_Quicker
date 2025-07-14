@@ -1,6 +1,8 @@
 {
     "username": "",
     "password": "",
+    "startdate": "06/01/2025",
+    "enddate": "06/30/2025",
     "l3team": ["SRIRAM","PHIL","LOVEPREET","VANITA","ESC_SRIRAM","ESC_PHIL","ESC_LOVEPREET","ESC_VANITA","DL"],
     "training" : {"SRIRAM": 1,"PHIL": 0,"LOVEPREET": 0,"VANITA": 0}
 }
