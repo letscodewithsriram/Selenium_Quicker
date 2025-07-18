@@ -44,6 +44,19 @@ def convert_to_excel(perf_info):
     # print(perf_info)
     # print(type(perf_info))
 
+    # merge_assist_escalated
+
+    for l3mem in creds["l3team"]:
+        if not re.search("ESC", l3mem) and not re.search("DL", l3mem):
+            print(l3mem)
+            # To check two tags (both assist and escalated) in tickets to avoid double counting.
+            for esctkt in perf_info["ESC_" + l3mem]:
+                print(esctkt.strip().split('~')[0])
+                for asttkts in perf_info[l3mem]:
+                    if re.search(esctkt.strip().split('~')[0], asttkts):
+                        perf_info[l3mem].remove(asttkts)
+                        print(asttkts)
+
     scores = []
 
     for k,v in perf_info.items():
@@ -141,11 +154,11 @@ def convert_to_excel(perf_info):
         ## Assist
         if not re.search("ESC", k) and not re.search("DL", k):
             worksheet.write(row, col, k)
-            worksheet.write(row, col + 1, len(v)*0.25 + len(perf_info["ESC_" + k]))
+            # worksheet.write(row, col + 1, len(v)*creds['scoring_factor']['assist'] + len(perf_info["ESC_" + k])*creds['scoring_factor']['escalate'])
             if k in toppers:
-                worksheet.write(row, col + 1, len(v) * 0.25 + len(perf_info["ESC_" + k]), topper_format)
+                worksheet.write(row, col + 1, len(v)*creds['scoring_factor']['assist'] + len(perf_info["ESC_" + k])*creds['scoring_factor']['escalate'] + creds['training'][k]*creds['scoring_factor']['topic'], topper_format)
             else:
-                worksheet.write(row, col + 1, len(v) * 0.25 + len(perf_info["ESC_" + k]))
+                worksheet.write(row, col + 1, len(v)*creds['scoring_factor']['assist'] + len(perf_info["ESC_" + k])*creds['scoring_factor']['escalate']  + creds['training'][k]*creds['scoring_factor']['topic'])
             worksheet.write(row, col + 2, len(v))
             worksheet.write(row, col + 3, len(perf_info["ESC_" + k]))
             worksheet.write(row, col + 4, creds['training'][k])
