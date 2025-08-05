@@ -15,34 +15,35 @@ from dateutil.relativedelta import relativedelta
 today = date.today()
 last_month = today - relativedelta(months=1)
 formatted_last_month = last_month.strftime('%b-%Y')  # 'Jun-2025'
+formatted_xls_last_month = last_month.strftime('%b_%Y')  # 'Jun-2025'
 
 with open("creds.json","r") as credshr:
     creds = json.load(credshr)
 
 def convert_to_excel(perf_info):
     print(perf_info)
-    # perf_info = {'SRIRAM': ['10787968~Farhan Ahmed', '10662988~Lovepreet Singh', '10618208~Ankit Jain', '10607081~Sriram Ramanujam', '10568171~Prachi Patel',
-    #                         '10556936~Himanshu Jain', '10506535~Ankit Jain', '10335074~Sriram Ramanujam'],
-    #              'PHIL': ['10834149~Harsh Patel', '10808630~Sagar Ajudiya', '10808040~Andrei Portnov', '10781682~Santhosh Shanmugam', '10772826~Ahmad Srour',
-    #                       '10764261~Ahmad Srour', '10757407~Harsh Patel', '10666571~Andrei Portnov', '10611309~Harsh Patel', '10611024~Ahmad Srour', '10610281~Harsh Patel',
-    #                       '10592786~Phil Rose', '10581257~Ahmad Srour', '10179306~Ahmad Srour', '9093372~Saif Ali Momin'],
-    #              'LOVEPREET': ['10750191~Harsh Patel', '10710545~Harsh Patel', '10707139~Harsh Patel', '10702937~Harsh Patel',
-    #                            '10631843~Harsh Patel', '10604987~Santhosh Shanmugam', '10602581~Sriram Ramanujam', '10600119~Ahmad Srour', '10581097~Sangeet Sharma',
-    #                            '10571623~Lovepreet Singh', '10542560~Antonio Elves Alves Ribeiro', '10533232~Selvam Sitaraman', '10482385~Adrian Hill', '10471510~Selvam Sitaraman',
-    #                            '10470732~Ahmad Srour', '10388286~Tarranum Bano', '10236254~Daniel Zhong', '9889870~Antonio Elves Alves Ribeiro'],
-    #              'VANITA': ['10618811~Muhammad Amer Rashid', '10618811~Muhammad Amer Rashid','10544944~Sriram Ramanujam', '10479457~Santhosh Shanmugam', '10467627~Vanita Fernandes', '10403057~Sriram Ramanujam',
-    #                         '10167866~Sriram Ramanujam'],
-    #              'ESC_SRIRAM': [],
-    #              'ESC_PHIL': ['10706806~Phil Rose', '10615420~Phil Rose', '10605550~Phil Rose', '10592786~Phil Rose', '10446718~Phil Rose', '10407446~Phil Rose'],
-    #              'ESC_LOVEPREET': ['10669888~Lovepreet Singh', '10600635~Lovepreet Singh', '10571623~Lovepreet Singh', '10527249~Lovepreet Singh', '10317933~Lovepreet Singh'],
-    #              'ESC_VANITA': ['10699878~Vanita Fernandes', '10621071~Vanita Fernandes', '10518576~Vanita Fernandes', '10467627~Vanita Fernandes',
-    #                             '10457837~Sangeet Sharma', '10298672~Vanita Fernandes', '9002707~Vanita Fernandes'],
-    #              'DL': ['10762155~Kavithas Thevarajah', '10762155~Kavithas Thevarajah', '10710191~Harsh Patel', '10110545~Harsh Patel', '10701139~Harsh Patel', '10712937~Harsh Patel',
-    #                            '10631843~Harsh Patel', '10604987~Santhosh Shanmugam', '10602581~Sriram Ramanujam', '10600119~Ahmad Srour', '10581097~Sangeet Sharma',
-    #                            '10571623~Lovepreet Singh', '10542560~Antonio Elves Alves Ribeiro', '10533232~Selvam Sitaraman', '10482385~Adrian Hill', '10471510~Selvam Sitaraman',
-    #                            '10470732~Ahmad Srour', '10388286~Tarranum Bano', '10236254~Daniel Zhong', '9889870~Antonio Elves Alves Ribeiro']}
-    # print(perf_info)
-    # print(type(perf_info))
+    perf_info = {'SRIRAM': ['10787968~Farhan Ahmed', '10662988~Lovepreet Singh', '10618208~Ankit Jain', '10607081~Sriram Ramanujam', '10568171~Prachi Patel',
+                            '10556936~Himanshu Jain', '10506535~Ankit Jain', '10335074~Sriram Ramanujam'],
+                 'PHIL': ['10834149~Harsh Patel', '10808630~Sagar Ajudiya', '10808040~Andrei Portnov', '10781682~Santhosh Shanmugam', '10772826~Ahmad Srour',
+                          '10764261~Ahmad Srour', '10757407~Harsh Patel', '10666571~Andrei Portnov', '10611309~Harsh Patel', '10611024~Ahmad Srour', '10610281~Harsh Patel',
+                          '10592786~Phil Rose', '10581257~Ahmad Srour', '10179306~Ahmad Srour', '9093372~Saif Ali Momin'],
+                 'LOVEPREET': ['10750191~Harsh Patel', '10710545~Harsh Patel', '10707139~Harsh Patel', '10702937~Harsh Patel',
+                               '10631843~Harsh Patel', '10604987~Santhosh Shanmugam', '10602581~Sriram Ramanujam', '10600119~Ahmad Srour', '10581097~Sangeet Sharma',
+                               '10571623~Lovepreet Singh', '10542560~Antonio Elves Alves Ribeiro', '10533232~Selvam Sitaraman', '10482385~Adrian Hill', '10471510~Selvam Sitaraman',
+                               '10470732~Ahmad Srour', '10388286~Tarranum Bano', '10236254~Daniel Zhong', '9889870~Antonio Elves Alves Ribeiro'],
+                 'VANITA': ['10618811~Muhammad Amer Rashid', '10618811~Muhammad Amer Rashid','10544944~Sriram Ramanujam', '10479457~Santhosh Shanmugam', '10467627~Vanita Fernandes', '10403057~Sriram Ramanujam',
+                            '10167866~Sriram Ramanujam'],
+                 'ESC_SRIRAM': [],
+                 'ESC_PHIL': ['10706806~Phil Rose', '10615420~Phil Rose', '10605550~Phil Rose', '10592786~Phil Rose', '10446718~Phil Rose', '10407446~Phil Rose'],
+                 'ESC_LOVEPREET': ['10669888~Lovepreet Singh', '10600635~Lovepreet Singh', '10571623~Lovepreet Singh', '10527249~Lovepreet Singh', '10317933~Lovepreet Singh'],
+                 'ESC_VANITA': ['10699878~Vanita Fernandes', '10621071~Vanita Fernandes', '10518576~Vanita Fernandes', '10467627~Vanita Fernandes',
+                                '10457837~Sangeet Sharma', '10298672~Vanita Fernandes', '9002707~Vanita Fernandes'],
+                 'DL': ['10762155~Kavithas Thevarajah', '10762155~Kavithas Thevarajah', '10710191~Harsh Patel', '10110545~Harsh Patel', '10701139~Harsh Patel', '10712937~Harsh Patel',
+                               '10631843~Harsh Patel', '10604987~Santhosh Shanmugam', '10602581~Sriram Ramanujam', '10600119~Ahmad Srour', '10581097~Sangeet Sharma',
+                               '10571623~Lovepreet Singh', '10542560~Antonio Elves Alves Ribeiro', '10533232~Selvam Sitaraman', '10482385~Adrian Hill', '10471510~Selvam Sitaraman',
+                               '10470732~Ahmad Srour', '10388286~Tarranum Bano', '10236254~Daniel Zhong', '9889870~Antonio Elves Alves Ribeiro']}
+    print(perf_info)
+    print(type(perf_info))
 
     # merge_assist_escalated
 
@@ -66,7 +67,7 @@ def convert_to_excel(perf_info):
     max_score = max(score for name, score in scores)
     toppers = [name for name, score in scores if score == max_score]
 
-    workbook = xlsxwriter.Workbook("Monthly_Stat.xlsx")
+    workbook = xlsxwriter.Workbook("L3_Monthly_Stat_" + str(formatted_xls_last_month) + ".xlsx")
 
     cell_format = workbook.add_format({
         'bold': False,
@@ -146,7 +147,6 @@ def convert_to_excel(perf_info):
     worksheet.write(row, 5, "ASSIST TICKETS", table_header_format)
     worksheet.write(row, 6, "ESCALATED TICKETS", table_header_format)
 
-
     row = row + 1
     for k,v in perf_info.items():
         col = 0
@@ -166,35 +166,112 @@ def convert_to_excel(perf_info):
             worksheet.write(row, col + 6, ''.join(tk.strip().split("~")[0] + ' ' for tk in perf_info["ESC_" + k]))
         row = row + 1
 
+    workbook.close()
+
     tdict = {}
     for k, v in perf_info.items():
         col = 0
-    if re.search("DL", k):
-        for listinfo in perf_info["DL"]:
-            n = listinfo.split("~")[1].strip()
-            if n not in tdict.keys():
-               tdict[n] = 1
-            if n in tdict.keys():
-                tdict[n] = tdict[n] + 1
-
+        if re.search("DL", k):
+            for listinfo in perf_info["DL"]:
+                n = listinfo.split("~")[1].strip()
+                if n in tdict.keys():
+                    tdict[n] = tdict[n] + 1
+                elif n not in tdict.keys():
+                    tdict[n] = 1
 
     row = row - 3
-    worksheet.write(row, 0, 'NAME', table_header_format)
-    worksheet.write(row, 1, 'COUNT', table_header_format)
-    worksheet.merge_range(row, 2, row, 6, "DL TICKETS INFO", table_header_format)
+
+    workbook1 = xlsxwriter.Workbook("CPLX_Level_Monthly_Stats_" + str(formatted_xls_last_month) + ".xlsx")
+
+    cell_format = workbook1.add_format({
+        'bold': False,
+        'font_color': 'black',
+        'font_size': 11,
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 1,
+        'text_wrap': True
+    })
+
+    table_header_format = workbook1.add_format({
+        'bold': True,
+        'font_color': 'black',
+        'bg_color': 'red',
+        'font_size': 11,
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 1
+    })
+
+    topper_format = workbook1.add_format({
+        'bold': True,
+        'font_color': 'black',
+        'bg_color': 'green',
+        'font_size': 11,
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 1
+    })
+
+    header_format = workbook1.add_format({
+        'bold': True,
+        'font_color': 'black',
+        'bg_color': 'white',
+        'font_size': 20,
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 1
+    })
+
+    sub_header_format = workbook1.add_format({
+        'bold': True,
+        'font_color': 'black',
+        'bg_color': 'white',
+        'font_size': 14,
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 1
+    })
+
+    worksheet1 = workbook1.add_worksheet()
+    worksheet1.set_column("A:A", 20, cell_format)
+    worksheet1.set_column("B:B", 14, cell_format)
+    worksheet1.set_column("C:C", 14, cell_format)
+    worksheet1.set_column("D:D", 14, cell_format)
+    worksheet1.set_column("E:E", 14, cell_format)
+    worksheet1.set_column("F:F", 35, cell_format)
+    worksheet1.set_column("G:G", 35, cell_format)
+    worksheet1.insert_image('A1', 'Fortinet-logomark-rgb-red.png',
+                           {'x_scale': 0.75, 'y_scale': 0.75, 'x_offset': 30, 'y_offset': 10})
+    worksheet1.insert_image('G1', 'Fortinet-logo-rgb-black-red.png',
+                           {'x_scale': 1.25, 'y_scale': 1.25, 'x_offset': 5, 'y_offset': 15})
+    merge_format = workbook1.add_format({'align': 'center', 'bold': True})
+
+    worksheet1.merge_range('B2:F2', "Generated On - " + str(today) + "[" + str(creds['startdate']) + " - " + str(
+        creds['enddate']) + "]", sub_header_format)
+    worksheet1.merge_range('B1:F1', "Monthly Report : " + str(formatted_last_month), header_format)
+    worksheet1.merge_range('B3:F3', "Queues Covered: AMER_SOAR, AMER_FMG_FAZ", sub_header_format)
+    worksheet1.merge_range('A1:A3', "")
+    worksheet1.merge_range('G1:G3', "")
+
+    row = 3
+
+    worksheet1.write(row, 0, 'NAME', table_header_format)
+    worksheet1.write(row, 1, 'COUNT', table_header_format)
+    worksheet1.merge_range(row, 2, row, 6, "DL TICKETS INFO", table_header_format)
 
     row = row + 1
     for k, v in tdict.items():
         col = 0
-        worksheet.write(row, col, k)
-        worksheet.write(row, col + 1, v)
-        worksheet.merge_range(row, col + 2, row, col +6, ' '.join(x.strip().split("~")[0] for x in perf_info['DL'] if re.search(k, x)))
+        worksheet1.write(row, col, k)
+        worksheet1.write(row, col + 1, v)
+        worksheet1.merge_range(row, col + 2, row, col +6, ' '.join(x.strip().split("~")[0] for x in perf_info['DL'] if re.search(k, x)))
         row = row + 1
 
-    workbook.close()
+    workbook1.close()
 
-# convert_to_excel("NULL")
-# exit()
+convert_to_excel("NULL")
+exit()
 def get_tkt_timer_info(url):
     print(url)
     driver.get(url)
