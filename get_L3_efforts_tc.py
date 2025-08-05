@@ -10,40 +10,59 @@ import json
 import xlsxwriter
 import re
 from datetime import date
-from dateutil.relativedelta import relativedelta
+# from dateutil.relativedelta import relativedelta
 
 today = date.today()
-last_month = today - relativedelta(months=1)
-formatted_last_month = last_month.strftime('%b-%Y')  # 'Jun-2025'
-formatted_xls_last_month = last_month.strftime('%b_%Y')  # 'Jun-2025'
+# last_month = today - relativedelta(months=1)
+# formatted_last_month = last_month.strftime('%b-%Y')  # 'Jun-2025'
+# formatted_xls_last_month = last_month.strftime('%b_%Y')  # 'Jun-2025'
+
+from datetime import date
+
+today = date.today()
+# Handle going back a month manually
+if today.month == 1:
+    last_month = date(today.year - 1, 12, today.day)
+else:
+    try:
+        last_month = date(today.year, today.month - 1, today.day)
+    except ValueError:
+        from calendar import monthrange
+        last_day = monthrange(today.year, today.month - 1)[1]
+        last_month = date(today.year, today.month - 1, last_day)
+
+formatted_last_month = last_month.strftime('%b-%Y')  # e.g., 'Jun-2025'
+formatted_xls_last_month = last_month.strftime('%b_%Y')  # e.g., 'Jun_2025'
+print(formatted_last_month)
+
 
 with open("creds.json","r") as credshr:
     creds = json.load(credshr)
 
 def convert_to_excel(perf_info):
-    print(perf_info)
-    perf_info = {'SRIRAM': ['10787968~Farhan Ahmed', '10662988~Lovepreet Singh', '10618208~Ankit Jain', '10607081~Sriram Ramanujam', '10568171~Prachi Patel',
-                            '10556936~Himanshu Jain', '10506535~Ankit Jain', '10335074~Sriram Ramanujam'],
-                 'PHIL': ['10834149~Harsh Patel', '10808630~Sagar Ajudiya', '10808040~Andrei Portnov', '10781682~Santhosh Shanmugam', '10772826~Ahmad Srour',
-                          '10764261~Ahmad Srour', '10757407~Harsh Patel', '10666571~Andrei Portnov', '10611309~Harsh Patel', '10611024~Ahmad Srour', '10610281~Harsh Patel',
-                          '10592786~Phil Rose', '10581257~Ahmad Srour', '10179306~Ahmad Srour', '9093372~Saif Ali Momin'],
-                 'LOVEPREET': ['10750191~Harsh Patel', '10710545~Harsh Patel', '10707139~Harsh Patel', '10702937~Harsh Patel',
-                               '10631843~Harsh Patel', '10604987~Santhosh Shanmugam', '10602581~Sriram Ramanujam', '10600119~Ahmad Srour', '10581097~Sangeet Sharma',
-                               '10571623~Lovepreet Singh', '10542560~Antonio Elves Alves Ribeiro', '10533232~Selvam Sitaraman', '10482385~Adrian Hill', '10471510~Selvam Sitaraman',
-                               '10470732~Ahmad Srour', '10388286~Tarranum Bano', '10236254~Daniel Zhong', '9889870~Antonio Elves Alves Ribeiro'],
-                 'VANITA': ['10618811~Muhammad Amer Rashid', '10618811~Muhammad Amer Rashid','10544944~Sriram Ramanujam', '10479457~Santhosh Shanmugam', '10467627~Vanita Fernandes', '10403057~Sriram Ramanujam',
-                            '10167866~Sriram Ramanujam'],
-                 'ESC_SRIRAM': [],
-                 'ESC_PHIL': ['10706806~Phil Rose', '10615420~Phil Rose', '10605550~Phil Rose', '10592786~Phil Rose', '10446718~Phil Rose', '10407446~Phil Rose'],
-                 'ESC_LOVEPREET': ['10669888~Lovepreet Singh', '10600635~Lovepreet Singh', '10571623~Lovepreet Singh', '10527249~Lovepreet Singh', '10317933~Lovepreet Singh'],
-                 'ESC_VANITA': ['10699878~Vanita Fernandes', '10621071~Vanita Fernandes', '10518576~Vanita Fernandes', '10467627~Vanita Fernandes',
-                                '10457837~Sangeet Sharma', '10298672~Vanita Fernandes', '9002707~Vanita Fernandes'],
-                 'DL': ['10762155~Kavithas Thevarajah', '10762155~Kavithas Thevarajah', '10710191~Harsh Patel', '10110545~Harsh Patel', '10701139~Harsh Patel', '10712937~Harsh Patel',
-                               '10631843~Harsh Patel', '10604987~Santhosh Shanmugam', '10602581~Sriram Ramanujam', '10600119~Ahmad Srour', '10581097~Sangeet Sharma',
-                               '10571623~Lovepreet Singh', '10542560~Antonio Elves Alves Ribeiro', '10533232~Selvam Sitaraman', '10482385~Adrian Hill', '10471510~Selvam Sitaraman',
-                               '10470732~Ahmad Srour', '10388286~Tarranum Bano', '10236254~Daniel Zhong', '9889870~Antonio Elves Alves Ribeiro']}
-    print(perf_info)
-    print(type(perf_info))
+    # print(perf_info)
+    # perf_info = {'SRIRAM': ['10787968~Farhan Ahmed', '10662988~Lovepreet Singh', '10618208~Ankit Jain', '10607081~Sriram Ramanujam', '10568171~Prachi Patel',
+    #                         '10556936~Himanshu Jain', '10506535~Ankit Jain', '10335074~Sriram Ramanujam'],
+    #              'PHIL': ['10834149~Harsh Patel', '10808630~Sagar Ajudiya', '10808040~Andrei Portnov', '10781682~Santhosh Shanmugam', '10772826~Ahmad Srour',
+    #                       '10764261~Ahmad Srour', '10757407~Harsh Patel', '10666571~Andrei Portnov', '10611309~Harsh Patel', '10611024~Ahmad Srour', '10610281~Harsh Patel',
+    #                       '10592786~Phil Rose', '10581257~Ahmad Srour', '10179306~Ahmad Srour', '9093372~Saif Ali Momin'],
+    #              'LOVEPREET': ['10750191~Harsh Patel', '10710545~Harsh Patel', '10707139~Harsh Patel', '10702937~Harsh Patel',
+    #                            '10631843~Harsh Patel', '10604987~Santhosh Shanmugam', '10602581~Sriram Ramanujam', '10600119~Ahmad Srour', '10581097~Sangeet Sharma',
+    #                            '10571623~Lovepreet Singh', '10542560~Antonio Elves Alves Ribeiro', '10533232~Selvam Sitaraman', '10482385~Adrian Hill', '10471510~Selvam Sitaraman',
+    #                            '10470732~Ahmad Srour', '10388286~Tarranum Bano', '10236254~Daniel Zhong', '9889870~Antonio Elves Alves Ribeiro'],
+    #              'VANITA': ['10618811~Muhammad Amer Rashid', '10618811~Muhammad Amer Rashid','10544944~Sriram Ramanujam', '10479457~Santhosh Shanmugam', '10467627~Vanita Fernandes', '10403057~Sriram Ramanujam',
+    #                         '10167866~Sriram Ramanujam'],
+    #              'ESC_SRIRAM': [],
+    #              'ESC_PHIL': ['10706806~Phil Rose', '10615420~Phil Rose', '10605550~Phil Rose', '10592786~Phil Rose', '10446718~Phil Rose', '10407446~Phil Rose'],
+    #              'ESC_LOVEPREET': ['10669888~Lovepreet Singh', '10600635~Lovepreet Singh', '10571623~Lovepreet Singh', '10527249~Lovepreet Singh', '10317933~Lovepreet Singh'],
+    #              'ESC_VANITA': ['10699878~Vanita Fernandes', '10621071~Vanita Fernandes', '10518576~Vanita Fernandes', '10467627~Vanita Fernandes',
+    #                             '10457837~Sangeet Sharma', '10298672~Vanita Fernandes', '9002707~Vanita Fernandes'],
+    #              'DL': ['10762155~Kavithas Thevarajah', '10762155~Kavithas Thevarajah', '10710191~Harsh Patel', '10110545~Harsh Patel', '10701139~Harsh Patel', '10712937~Harsh Patel',
+    #                            '10631843~Harsh Patel', '10604987~Santhosh Shanmugam', '10602581~Sriram Ramanujam', '10600119~Ahmad Srour', '10581097~Sangeet Sharma',
+    #                            '10571623~Lovepreet Singh', '10542560~Antonio Elves Alves Ribeiro', '10533232~Selvam Sitaraman', '10482385~Adrian Hill', '10471510~Selvam Sitaraman',
+    #                            '10470732~Ahmad Srour', '10388286~Tarranum Bano', '10236254~Daniel Zhong', '9889870~Antonio Elves Alves Ribeiro']}
+    # print(perf_info)
+    # print(type(perf_info))
 
     # merge_assist_escalated
 
@@ -270,8 +289,8 @@ def convert_to_excel(perf_info):
 
     workbook1.close()
 
-convert_to_excel("NULL")
-exit()
+# convert_to_excel("NULL")
+# exit()
 def get_tkt_timer_info(url):
     print(url)
     driver.get(url)
